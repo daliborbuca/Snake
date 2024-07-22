@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>Snake.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Snake.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">turtle </span><span class="s0">import </span><span class="s1">Screen</span><span class="s0">, </span><span class="s1">Turtle</span>
+<span class="s0">import </span><span class="s1">random</span>
+<span class="s0">import </span><span class="s1">time</span>
+
+<span class="s2"># Setup the screen</span>
+<span class="s1">screen = Screen()</span>
+<span class="s1">screen.setup(width=</span><span class="s3">600</span><span class="s0">, </span><span class="s1">height=</span><span class="s3">600</span><span class="s1">)</span>
+<span class="s1">screen.bgcolor(</span><span class="s4">&quot;black&quot;</span><span class="s1">)</span>
+<span class="s1">screen.title(</span><span class="s4">&quot;Snake Game&quot;</span><span class="s1">)</span>
+<span class="s1">screen.tracer(</span><span class="s3">0</span><span class="s1">)  </span><span class="s2"># Turn off animation for performance</span>
+
+<span class="s2"># Create the snake</span>
+<span class="s1">segments = []</span>
+<span class="s1">starting_positions = [(</span><span class="s3">0</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span><span class="s0">, </span><span class="s1">(-</span><span class="s3">20</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)</span><span class="s0">, </span><span class="s1">(-</span><span class="s3">40</span><span class="s0">, </span><span class="s3">0</span><span class="s1">)]</span>
+
+<span class="s0">for </span><span class="s1">position </span><span class="s0">in </span><span class="s1">starting_positions:</span>
+    <span class="s1">new_segment = Turtle(</span><span class="s4">&quot;square&quot;</span><span class="s1">)</span>
+    <span class="s1">new_segment.color(</span><span class="s4">&quot;white&quot;</span><span class="s1">)</span>
+    <span class="s1">new_segment.penup()  </span><span class="s2"># Prevent drawing lines</span>
+    <span class="s1">new_segment.goto(position)</span>
+    <span class="s1">segments.append(new_segment)</span>
+
+<span class="s2"># Create the food</span>
+<span class="s1">food = Turtle(</span><span class="s4">&quot;circle&quot;</span><span class="s1">)</span>
+<span class="s1">food.color(</span><span class="s4">&quot;red&quot;</span><span class="s1">)</span>
+<span class="s1">food.penup()</span>
+<span class="s1">food.goto(random.randint(-</span><span class="s3">290</span><span class="s0">, </span><span class="s3">290</span><span class="s1">)</span><span class="s0">, </span><span class="s1">random.randint(-</span><span class="s3">290</span><span class="s0">, </span><span class="s3">290</span><span class="s1">))</span>
+
+<span class="s2"># Snake movement</span>
+<span class="s0">def </span><span class="s1">move():</span>
+    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(len(segments) - </span><span class="s3">1</span><span class="s0">, </span><span class="s3">0</span><span class="s0">, </span><span class="s1">-</span><span class="s3">1</span><span class="s1">):</span>
+        <span class="s1">x = segments[i - </span><span class="s3">1</span><span class="s1">].xcor()</span>
+        <span class="s1">y = segments[i - </span><span class="s3">1</span><span class="s1">].ycor()</span>
+        <span class="s1">segments[i].goto(x</span><span class="s0">, </span><span class="s1">y)</span>
+    <span class="s1">segments[</span><span class="s3">0</span><span class="s1">].forward(</span><span class="s3">20</span><span class="s1">)</span>
+
+<span class="s2"># Control functions</span>
+<span class="s0">def </span><span class="s1">go_up():</span>
+    <span class="s0">if </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].heading() != </span><span class="s3">270</span><span class="s1">:</span>
+        <span class="s1">segments[</span><span class="s3">0</span><span class="s1">].setheading(</span><span class="s3">90</span><span class="s1">)</span>
+
+<span class="s0">def </span><span class="s1">go_down():</span>
+    <span class="s0">if </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].heading() != </span><span class="s3">90</span><span class="s1">:</span>
+        <span class="s1">segments[</span><span class="s3">0</span><span class="s1">].setheading(</span><span class="s3">270</span><span class="s1">)</span>
+
+<span class="s0">def </span><span class="s1">go_left():</span>
+    <span class="s0">if </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].heading() != </span><span class="s3">0</span><span class="s1">:</span>
+        <span class="s1">segments[</span><span class="s3">0</span><span class="s1">].setheading(</span><span class="s3">180</span><span class="s1">)</span>
+
+<span class="s0">def </span><span class="s1">go_right():</span>
+    <span class="s0">if </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].heading() != </span><span class="s3">180</span><span class="s1">:</span>
+        <span class="s1">segments[</span><span class="s3">0</span><span class="s1">].setheading(</span><span class="s3">0</span><span class="s1">)</span>
+
+<span class="s2"># Keyboard bindings</span>
+<span class="s1">screen.listen()</span>
+<span class="s1">screen.onkey(go_up</span><span class="s0">, </span><span class="s4">&quot;w&quot;</span><span class="s1">)</span>
+<span class="s1">screen.onkey(go_down</span><span class="s0">, </span><span class="s4">&quot;s&quot;</span><span class="s1">)</span>
+<span class="s1">screen.onkey(go_left</span><span class="s0">, </span><span class="s4">&quot;a&quot;</span><span class="s1">)</span>
+<span class="s1">screen.onkey(go_right</span><span class="s0">, </span><span class="s4">&quot;d&quot;</span><span class="s1">)</span>
+
+<span class="s2"># Main game loop</span>
+<span class="s1">game_is_on = </span><span class="s0">True</span>
+
+<span class="s0">while </span><span class="s1">game_is_on:</span>
+    <span class="s1">screen.update()  </span><span class="s2"># Update the screen</span>
+    <span class="s1">move()  </span><span class="s2"># Move the snake</span>
+
+    <span class="s2"># Check for collision with the food</span>
+    <span class="s0">if </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].distance(food) &lt; </span><span class="s3">15</span><span class="s1">:</span>
+        <span class="s1">food.goto(random.randint(-</span><span class="s3">290</span><span class="s0">, </span><span class="s3">290</span><span class="s1">)</span><span class="s0">, </span><span class="s1">random.randint(-</span><span class="s3">290</span><span class="s0">, </span><span class="s3">290</span><span class="s1">))  </span><span class="s2"># Move food to a random spot</span>
+
+        <span class="s2"># Add a new segment to the snake</span>
+        <span class="s1">new_segment = Turtle(</span><span class="s4">&quot;square&quot;</span><span class="s1">)</span>
+        <span class="s1">new_segment.color(</span><span class="s4">&quot;white&quot;</span><span class="s1">)</span>
+        <span class="s1">new_segment.penup()</span>
+        <span class="s1">segments.append(new_segment)</span>
+
+    <span class="s2"># Check for collision with the wall</span>
+    <span class="s0">if </span><span class="s1">(segments[</span><span class="s3">0</span><span class="s1">].xcor() &gt; </span><span class="s3">290 </span><span class="s0">or </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].xcor() &lt; -</span><span class="s3">290 </span><span class="s0">or</span>
+        <span class="s1">segments[</span><span class="s3">0</span><span class="s1">].ycor() &gt; </span><span class="s3">290 </span><span class="s0">or </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].ycor() &lt; -</span><span class="s3">290</span><span class="s1">):</span>
+        <span class="s1">game_is_on = </span><span class="s0">False</span>
+        <span class="s1">print(</span><span class="s4">&quot;Game Over&quot;</span><span class="s1">)</span>
+
+    <span class="s2"># Check for collision with itself</span>
+    <span class="s0">for </span><span class="s1">segment </span><span class="s0">in </span><span class="s1">segments[</span><span class="s3">1</span><span class="s1">:]:</span>
+        <span class="s0">if </span><span class="s1">segments[</span><span class="s3">0</span><span class="s1">].distance(segment) &lt; </span><span class="s3">10</span><span class="s1">:</span>
+            <span class="s1">game_is_on = </span><span class="s0">False</span>
+            <span class="s1">print(</span><span class="s4">&quot;Game Over&quot;</span><span class="s1">)</span>
+
+    <span class="s1">time.sleep(</span><span class="s3">0.1</span><span class="s1">)  </span><span class="s2"># Control the speed of the snake</span>
+
+<span class="s2"># Keep the window open</span>
+<span class="s1">screen.mainloop()</span>
+</pre>
+</body>
+</html>
